@@ -17,7 +17,6 @@ const DummyElement: React.FC<DummyElementProps> = ({ margin, padding }) => {
 
   return (
     <div style={{ marginTop: '40px' }}>
-      <div style={{ color: 'white', marginBottom: '10px' }}>Dummy Element</div>
       <div style={dummyElementStyle}>
         <h1 style={{ margin: 0 }}>Element</h1>
       </div>
