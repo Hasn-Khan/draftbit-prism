@@ -1,5 +1,14 @@
 %raw(`require("./PropertiesPanel.css")`)
 
+// Import the BoxAdjuster component
+module BoxAdjuster = {
+  @react.component
+  @module("./components/BoxAdjuster") // Ensure the path is correct
+  external make: unit => React.element = "default"
+}
+
+
+
 module Collapsible = {
   @react.component
   let make = (~title, ~children) => {
@@ -7,17 +16,15 @@ module Collapsible = {
 
     <section className="Collapsible">
       <button className="Collapsible-button" onClick={_e => toggle(_ => !collapsed)}>
-        <span> {React.string(title)} </span> <span> {React.string(collapsed ? "+" : "-")} </span>
+        <span> {React.string(title)} </span>
+        <span> {React.string(collapsed ? "+" : "-")} </span>
       </button>
       {collapsed ? React.null : <div className="Collapsible-content"> {children} </div>}
     </section>
   }
 }
 
-// This component provides a simplified example of fetching JSON data from
-// the backend and rendering it on the screen.
 module ViewExamples = {
-  // Type of the data returned by the /examples endpoint
   type example = {
     id: int,
     some_int: int,
@@ -29,13 +36,10 @@ module ViewExamples = {
     let (examples: option<array<example>>, setExamples) = React.useState(_ => None)
 
     React.useEffect1(() => {
-      // Fetch the data from /examples and set the state when the promise resolves
-      Fetch.fetchJson(`http://localhost:12346/examples`)
+      Fetch.fetchJson("http://localhost:12346/examples")
       |> Js.Promise.then_(examplesJson => {
-        // NOTE: this uses an unsafe type cast, as safely parsing JSON in rescript is somewhat advanced.
         Js.Promise.resolve(setExamples(_ => Some(Obj.magic(examplesJson))))
       })
-      // The "ignore" function is necessary because each statement is expected to return `unit` type, but Js.Promise.then return a Promise type.
       |> ignore
       None
     }, [setExamples])
@@ -54,12 +58,14 @@ module ViewExamples = {
   }
 }
 
-@genType @genType.as("PropertiesPanel") @react.component
+@genType
+@genType.as("PropertiesPanel")
+@react.component
 let make = () =>
   <aside className="PropertiesPanel">
     <Collapsible title="Load examples"> <ViewExamples /> </Collapsible>
     <Collapsible title="Margins & Padding">
-      <span> {React.string("TODO: build me!")} </span>
+      <BoxAdjuster /> // Use the imported BoxAdjuster in PascalCase here
     </Collapsible>
     <Collapsible title="Size"> <span> {React.string("example")} </span> </Collapsible>
   </aside>
