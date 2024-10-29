@@ -1,11 +1,13 @@
 .PropertiesPanel {
   width: 320px;
+  overflow: auto;
+  padding: 20px;
   background-color: #3d4b6c;
   height: 100vh;
 }
 
 .Collapsible {
-  margin-bottom: 2px;
+  margin-bottom: 10px;
 }
 
 .Collapsible-button {
@@ -21,5 +23,5 @@
 }
 
 .Collapsible-content {
-  margin: 8px;
+  margin: 10px;
 }
